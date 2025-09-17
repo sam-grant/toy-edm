@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "muon-edm-simulation"
+version = "0.2.0"
+description = "Comprehensive Muon EDM simulation framework with multiple physics models"
+requires-python = ">=3.8"
+dependencies = [
+    "numpy>=1.21.0",
+    "matplotlib>=3.5.0",
+    "scipy>=1.7.0",
+    "dataclasses-json>=0.5.0",
+    "PyPDF2>=3.0.0",
+    "ipykernel>=6.0.0",
+    "PyYAML>=6.0", 
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=6.0",
+    "black>=21.0",
+    "flake8>=3.8",
+]
+
+[project.scripts]
+muon-edm-basic = "muon_edm_simulation:run_edm_simulation_suite"
+muon-edm-enhanced = "muon_edm_enhanced:run_enhanced_edm_simulation"
+muon-edm-corrected = "muon_edm_corrected:run_corrected_edm_simulation"
+muon-edm-proper = "muon_edm_proper:run_proper_edm_simulation"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["*"]
+
+[tool.setuptools.package-data]
+"*" = ["*.mplstyle", "*.md", "*.txt"]
