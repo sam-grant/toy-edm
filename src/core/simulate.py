@@ -116,14 +116,14 @@ class Simulation:
                 # The EDM contribution, similar to a radial field, tilts the precession
                 # axis toward the radial (x) direction.
                 if edm_mag != 0.0:
-                    Omega[0] -= self.omega_a * edm_tilt_lab
+                    Omega[0] -= self.omega_a * edm_tilt
                 
                 # Background fields modify the effective field direction:
                 
                 if "Br_n0" in backgrounds:
                     # Radial field component (Br) tilts the precession axis
                     # radially, so it adds a component to Omega[0].
-                    Omega[0] -= ppm_to_omega(backgrounds["Br_n0"])
+                    Omega[0] = ppm_to_omega(backgrounds["Br_n0"])
                 
                 if "Bz_n0" in backgrounds:
                     # Uniform longitudinal field (Bz) tilts the precession axis
