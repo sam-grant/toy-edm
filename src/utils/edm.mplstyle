@@ -1,7 +1,7 @@
 # edm.mplstyle
 
 # Generic figure tweaks 
-axes.prop_cycle: cycler('color', ['0173B2', 'FF6600', '228B22', 'C41E3A'])
+axes.prop_cycle: cycler('color', ['1E1E1E', '0173B2', 'FF6600', '228B22', 'C41E3A', 'FF1493'])
 
 mathtext.default: regular
 font.size: 18

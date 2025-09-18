@@ -163,18 +163,18 @@ class Plotter:
     def spin_3d(self, results, title: Optional[str] = None, 
                 show: Optional[bool] = True, out_path: Optional[str] = None):
         """ Plot spin in 3D"""
-        fig, ax = plt.subplots(subplot_kw={"projection": "3d"}) 
+        fig, ax = plt.subplots(subplot_kw={"projection": "3d"}) # , figsize=(10, 8))
         # --- Spin trajectories ---
         for muon_idx in range(results['n_muons']):
             ax.plot(
-                results['sx'][:, muon_idx], 
                 results['sz'][:, muon_idx], 
+                results['sx'][:, muon_idx], 
                 results['sy'][:, muon_idx], 
                 color=self.color, linewidth=1.5
             )
         # Format
-        ax.set_xlabel(r'$S_{x}$') 
-        ax.set_ylabel(r'$S_{z}$') 
+        ax.set_xlabel(r'$S_{z}$') 
+        ax.set_ylabel(r'$S_{x}$') 
         ax.set_zlabel(r'$S_{y}$') 
         # Set viewing angle (elevation, azimuth)
         # ax.view_init(elev=20, azim=130)  
@@ -191,5 +191,93 @@ class Plotter:
             plt.show()
 
 
+    def spin_3d_overlay(self, results_dict, title: Optional[str] = None, 
+                show: Optional[bool] = True, out_path: Optional[str] = None):
+        """ Plot spin in 3D with improved layout and legend positioning"""
+        
+        # Create figure with larger margins
+        fig = plt.figure(figsize=(10, 8))
+        ax = fig.add_subplot(111, projection='3d')
+        
+        # Adjust subplot position to leave more room for legend
+        # [left, bottom, width, height] as fractions of figure size
+        # ax.set_position([0.1, 0.1, 0.65, 0.8])
+        
+        # Plot trajectories
+        for label, results in results_dict.items():
+            # --- Spin trajectories ---
+            for muon_idx in range(results['n_muons']):
+                ax.plot(
+                    results['sz'][:, muon_idx], 
+                    results['sx'][:, muon_idx], 
+                    results['sy'][:, muon_idx], 
+                    label=label if muon_idx == 0 else "",  # Only label first muon per config
+                    alpha=0.7, linewidth=1.5
+                )
+        
+        # Format axes
+        ax.set_xlabel(r'$S_{z}$', labelpad=10) 
+        ax.set_ylabel(r'$S_{x}$', labelpad=10) 
+        ax.set_zlabel(r'$S_{y}$', labelpad=10) 
+        
+        # Position legend outside the plot area
+        ax.legend(bbox_to_anchor=(1.05, 1.0), loc='upper left')
+        
+        # Set viewing angle (elevation, azimuth)
+        # ax.view_init(elev=20, azim=130)  
+
+        # ax.ticklabel_format(style='scientific', axis='x', scilimits=(-2,2), useMathText=True)
+        
+        # Optional figure title with more padding
+        if title:
+            fig.suptitle(title) # , fontsize=14, y=0.95)
+        
+        # # Adjust layout to prevent clipping
+        # plt.tight_layout()
+        
+        # Save with bbox_inches='tight' to include legend
+        if out_path:
+            Path(out_path).parent.mkdir(parents=True, exist_ok=True)
+            plt.savefig(out_path) # , bbox_inches='tight') #, dpi=300, facecolor='white')
+            print(f"\tWrote {out_path}")
+        
+        # Display
+        if show:
+            plt.show()
+            
+    # def spin_3d_overlay(self, results_dict, title: Optional[str] = None, 
+    #             show: Optional[bool] = True, out_path: Optional[str] = None):
+    #     """ Plot spin in 3D"""
+    #     fig, ax = plt.subplots(subplot_kw={"projection": "3d"}) 
+    #     #
+    #     for label, results in results_dict.items():
+    #         # --- Spin trajectories ---
+    #         for muon_idx in range(results['n_muons']):
+    #             ax.plot(
+    #                 results['sx'][:, muon_idx], 
+    #                 results['sz'][:, muon_idx], 
+    #                 results['sy'][:, muon_idx], 
+    #                 linewidth=1.5,
+    #                 label=label,
+    #                 alpha=0.7
+    #             )
+    #     # Format
+    #     ax.set_xlabel(r'$S_{x}$') 
+    #     ax.set_ylabel(r'$S_{z}$') 
+    #     ax.set_zlabel(r'$S_{y}$') 
+    #     ax.legend(loc="upper right")
+    #     # Set viewing angle (elevation, azimuth)
+    #     # ax.view_init(elev=20, azim=130)  
+    #     # Optional figure title
+    #     if title:
+    #         plt.suptitle(title)
+    #     # Save
+    #     if out_path:
+    #         Path(out_path).parent.mkdir(parents=True, exist_ok=True)
+    #         plt.savefig(out_path)
+    #         print(f"\tWrote {out_path}")
+    #     # Display
+    #     if show:
+    #         plt.show()
 
 
