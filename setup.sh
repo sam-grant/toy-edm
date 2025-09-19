@@ -14,7 +14,7 @@ fi
 
 # Create virtual environment
 echo "Creating virtual environment..."
-python3 -m venv toy-edm-env
+python3 -m venv edm_env
 
 # Activate virtual environment
 echo "Activating virtual environment..."
