@@ -28,6 +28,9 @@ pip install --upgrade pip
 echo "Installing dependencies..."
 pip install -e .
 
+# Activate
+source edm_env/bin/activate
+
 echo ""
 echo "=========================================="
 echo "Setup complete!"
