@@ -35,7 +35,7 @@ plotter = Plotter()
 config = {
     'n_muons': 1,           # Number of muons to simulate (deterministic at present, one is as good as a million!)
     't_max': 50e-6,         # Total simulation time in seconds
-    'time_steps': 1000,     # Number of time steps in the simulation
+    'time_steps': int(5e3), # Number of time steps in the simulation
     'edm_mag': 1e-20,       # EDM magnitude in ecm 
     'backgrounds': {"Bz_n0": 0.0, "Bz_n1": 0.0, "Br_n0": 0.0} # Background field strengths in ppm
 }       
@@ -43,7 +43,7 @@ results = simulation.run(**config)
 
 # Make plots 
 dir="small_edm_no_bkg"
-plotter.spin_3d(results, out_path='../img/{dir}/plt_spin_3d.png')
-plotter.wiggle_modulo(results, out_path='../img/{dir}/gr_1x2_wiggle_modulo.png')
-plotter.sy_modulo(results, out_path='../img/{dir}/gr_sy_modulo.png')
-plotter.spin_phase_summary(results, out_path='../img/{dir}/gr_3x2_spin_phase_summary.png')
+plotter.spin_3d(results, out_path=f'../img/{dir}/plt_spin_3d.png')
+plotter.wiggle_modulo(results, out_path=f'../img/{dir}/gr_1x2_wiggle_modulo.png')
+plotter.sy_modulo(results, out_path=f'../img/{dir}/gr_sy_modulo.png')
+plotter.spin_phase_summary(results, out_path=f'../img/{dir}/gr_3x2_spin_phase_summary.png')
