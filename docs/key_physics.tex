@@ -1,0 +1,207 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper, margin=1.25in, top=1.2in, bottom=1.2in, headsep=20pt]{geometry} 
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{siunitx}
+\usepackage{hyperref}
+
+\title{Toy EDM simulation: key physics}
+\author{Samuel Grant}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Introduction}
+
+This document outlines the key equations used in \texttt{toy-edm}: a simple muon electric dipole moment (EDM) simulation for the Fermilab Muon g-2 experiment. All calculations are done in the muon rest frame, where rest frame quantities are indicated by an asterisk.
+
+\section{Fundamental parameters}
+
+\subsection{Physical constants}
+\begin{align}
+c &= \SI{299792458}{\meter\per\second} \\
+e &= \SI{1.602176634e-19}{\coulomb} \\
+\hbar &= \SI{1.0545718176e-34}{\joule\second} \\
+m_\mu &= \SI{105.6583745}{\mega\electronvolt\per c^2} = \SI{1.88353e-28}{\kilogram}
+\end{align}
+
+\subsection{Muon anomalous magnetic moment}
+
+The anomalous magnetic moment is given by
+%
+\begin{equation}
+a_\mu = \frac{g-2}{2} = \num{1165920715e-12}
+\end{equation}
+%
+and the g-factor is
+\begin{equation}
+g = 2(1 + a_\mu) = \num{2.00233184}.
+\end{equation}
+%
+Please see the latest results from the Fermilab Muon $g-2$ experiment for more information [\href{https://arxiv.org/abs/2506.03069}{FNAL Muon $g-2$ 2025}].
+
+\subsection{Magic momentum}
+
+At the magic momentum, the Lorentz factor is
+%
+\begin{equation}
+\gamma_{\text{magic}} = \sqrt{1 + \frac{1}{a_\mu}} = \num{29.3},
+\end{equation}
+%
+and the corresponding speed factor is 
+\begin{equation}
+\beta_{\text{magic}} = \sqrt{1 - \frac{1}{\gamma_{\text{magic}}^2}} = \num{0.9994}.
+\end{equation}
+
+\section{$g-2$ spin precession}
+
+\subsection{Cyclotron angular frequency (rest frame)}
+%
+The cyclotron frequency is 
+%
+\begin{equation}
+\vec{\omega_c} = \frac{eB}{m_\mu\gamma_{\text{magic}}}
+\end{equation}
+%
+for $B = \SI{1.45}{\tesla}$, giving
+%
+\begin{equation}
+\omega_c = \SI{4.21e7}{\radian\per\second} = \SI{6.70}{\mega\hertz}.
+\end{equation}
+%
+\subsection{Anomalous precession angular frequency}
+%
+The anomalous precession frequency is defined as the difference between the spin precession frequency and the cyclotron frequency, given by
+%
+\begin{equation}
+\vec{\omega_a} = a_\mu \frac{eB}{m_\mu} = a_\mu \vec{\omega_c},
+\end{equation}
+%
+which is frame independent at the magic momentum. This gives an anomalous precession frequency of
+%
+\begin{equation}
+\omega_a = \SI{1.438e6}{\radian\per\second} = \SI{0.229}{\mega\hertz}
+\end{equation}
+%
+and a corresponding $T_{g-2}$ period of
+%
+\begin{equation}
+T_{g-2} = \frac{2\pi}{\omega_a} = \SI{4.37}{\micro\second}.
+\end{equation}
+
+\section{EDM physics}
+%
+\subsection{EDM precession angular frequency}
+%
+The precession frequency induced by a non-zero EDM is 
+%
+\begin{equation}
+\vec{\omega_\eta} = \eta \frac{e}{2 m_\mu}(\vec{\beta} \times \vec{B} + \frac{\vec{E}}{c})
+\end{equation}
+%
+where $\beta \times B$ is related to the motional electric field induced by the Lorentz transformation into the muon rest frame, $E_{\text{motion}}$, where
+%
+\begin{equation}
+\frac{E_{\text{motion}}}{c} = \vec{\beta} \times \vec{B}.
+\end{equation}
+%
+This makes motional electric field in the muon rest frame
+%
+\begin{equation}
+E_{\text{motional}} = \beta_{\text{magic}} B c = \SI{4.34e8}{\volt\per\meter}.
+\end{equation}
+%
+The total electric field also includes the contribution from the electrostatic quadrupoles (ESQs), $E_{\text{ESQ}}$, so that the total field is
+%
+\begin{equation}
+E_{\text{total}} = E_{\text{motion}} + E_{\text{ESQ}},
+\end{equation}
+%
+where the field from vertical ESQ plates running at 20 kV, separated by \SI{10}{\centi\meter}\footnote{An estimate!.} is
+%
+\begin{equation}
+E_{\text{ESQ}} = V / d = \SI{20e3}{} / 10^{-2} = \SI{2e6}{\volt\per\meter}
+\end{equation}
+%
+which is a factor of $\approx 200$ less that the motional field, and is neglected in this simulation.
+%
+The EDM precession frequency is then
+%
+\begin{equation}
+\vec{\omega_\eta} = \eta \frac{e}{2 m_\mu} \beta_{\text{magic}} B c
+\end{equation}
+
+\subsection{EDM tilt angle}
+
+The muon EDM is given by 
+\begin{equation}
+\vec{d_\mu} = \eta \frac{e}{2 m c} \vec{s}
+\end{equation}
+%
+where $\eta$ is the dimensionless coupling parameter, given by 
+% 
+\begin{equation}
+\eta = \frac{2 m_\mu c d_\mu}{e \hbar/2} = \frac{4 m_\mu  d_\mu c}{e \hbar}
+\end{equation}
+%
+for spin-1/2 particles. 
+
+The EDM causes the spin precession axis to tilt out of the horizontal plane by an angle $\delta^{*}$, in the rest frame, which is given by the ratio of the EDM and $g-2$ precession frequencies
+%
+\begin{equation}
+\tan \delta^{*} = \frac{\omega_\eta}{\omega_a} = \frac{\eta \beta_{\text{magic}}} { 2 a_\mu },
+\end{equation}  
+%
+The tilt angle in the lab frame is reduced by the Lorentz factor, so that
+%
+\begin{equation}
+\tan \delta = \frac{\tan \delta^{*}}{\gamma_{\text{magic}}} 
+\end{equation}
+%
+For small angles, $\tan \delta \approx \delta$.
+% 
+To extract the EDM from a measured tilt angle, the aboves formulas may be rearranged to give
+%
+\begin{equation}
+    \boxed{d_\mu = \frac{e \hbar a_\mu}{2 m_\mu c \beta_{\text{magic}}} \tan \delta^{*}}
+\end{equation}
+%
+For example, for $d_\mu = \SI{5.4e-18}{e \cdot cm}$, the expected rest frame tilt is $\delta^{*} = \SI{49.6}{\milli\radian}$, and the lab frame tilt is $\delta = \SI{1.69}{\milli\radian}$.
+
+\section{Spin evolution}
+
+\subsection{Rest frame spin components}
+%
+The spin vector evolution in the muon rest frame:
+\begin{align}
+S_x(t) &= \cos(\omega_a t) \\
+S_z(t) &= \sin(\omega_a t) \\
+S_y(t) &= \delta \sin(\omega_a t) \quad \text{(EDM contribution)}
+\end{align}
+%
+
+\subsection{The vertical angle}
+%
+The angle is of the polarisation vector with respect to the horizontal plane is given by
+\begin{equation}
+\theta_y = \sin^{-1}\left(\frac{s_y}{\sqrt{S_x^2 + S_y^2 + S_z^2}}\right)
+\end{equation}
+
+For small EDM effects, $\theta_y \approx S_y \approx \delta \sin(\omega_a t)$.
+
+\section{Frame transformations}
+
+\subsection{laboratory frame conversion}
+%
+To convert rest frame quantities to lab frame:
+\begin{align}
+\delta &= \frac{\delta^{*}}{\gamma_{\text{magic}}} \\
+\omega_{c} &= \frac{\omega_{c}^{*}}{\gamma_{\text{magic}}} \\
+\omega_{a} &= \omega_{a}^{*} \quad \text{(at magic momentum)}
+\end{align}
+
+\end{document}
