@@ -19,13 +19,13 @@ class Simulation:
         self.ring = RingGeometry()
         self.b_field = MagneticField(self.ring)
 
-        # Key angular frequencies (rest frame)
+        # Key angular frequencies
         # Note that omega_a is frame-independent at magic momentum
         self.omega_c = self.precession.cyclotron_frequency(self.b_field.nominal_field)
         self.omega_a = self.precession.anomalous_precession_frequency(self.b_field.nominal_field)
 
         # Placeholder for results
-        self._results = None
+        # self._results = None
 
         # Print and dump configuration in one pass
         print("\n--- Configuration ---")
@@ -105,8 +105,8 @@ class Simulation:
             
             # Loop over time for this muon
             for i, time in enumerate(t):
-                phi_c = self.omega_c * time #% 2*np.pi
-                phi_a = self.omega_a * time # % 2*np.pi
+                phi_c = self.omega_c * time
+                phi_a = self.omega_a * time
                 x = self.ring.radius * np.cos(phi_c)
                 y = self.ring.radius * np.sin(phi_c)
                 
