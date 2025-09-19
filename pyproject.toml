@@ -12,7 +12,6 @@ dependencies = [
     "matplotlib>=3.5.0",
     "scipy>=1.7.0",
     "dataclasses-json>=0.5.0",
-    "PyPDF2>=3.0.0",
     "ipykernel>=6.0.0",
     "PyYAML>=6.0", 
 ]

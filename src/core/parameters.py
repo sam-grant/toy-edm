@@ -1,5 +1,5 @@
 """
-Parameters based on final FNAL results
+Parameters based on FNAL results
 https://arxiv.org/abs/2506.03069 & https://arxiv.org/pdf/2402.15410
 """
 
@@ -75,22 +75,26 @@ class MuonParameters:
 
 @dataclass
 class PrecessionParameters:
-    """Spin precession parameters (muon rest frame)"""
+    """Spin precession parameters"""
     physics: PhysicsParameters
     muons: MuonParameters
 
     def cyclotron_frequency(self, B_field: float) -> float:
-        """Cyclotron frequency in rest frame [rad/s]"""
-        return self.physics.e / self.physics.m_mu_kg * B_field
-        
+        """Cyclotron frequency in LAB frame [rad/s]
+            This is a lab frame concept!!!
+        """
+        return self.physics.e / (self.physics.m_mu_kg * self.muons.magic_gamma) * B_field
+    
     def anomalous_precession_frequency(self, B_field: float) -> float:
-        """Anomalous precession frequency in rest frame [rad/s]"""
-        return self.muons.a_mu * self.cyclotron_frequency(B_field)
+        """Anomalous precession frequency [rad/s]
+            In the rest frame, although this is frame independent at p_magic
+        """
+        return self.muons.a_mu * self.cyclotron_frequency(B_field) * self.muons.magic_gamma
     
     def edm_tilt_angle(self, edm_magnitude_ecm: float, B_field: float) -> float:
         """
         Calculate EDM-induced tilt angle in rest frame [radians]
-        Uses formula: tan δ = (2m_μcβ d_μ)/(Qeℏa_μ)
+        Uses formula: tan_delta = (2 * m_mu * c * beta * d_mu)/(q * e * hbar * a_mu)
         """
         # Convert EDM to SI units  
         d_mu_si = edm_magnitude_ecm * self.physics.e * 1e-2  # Cm
@@ -102,7 +106,7 @@ class PrecessionParameters:
                       self.physics.hbar * self.muons.a_mu)
         
         return numerator / denominator  # Small angle: tan(delta) ~= delta
-    
+
 @dataclass
 class RingGeometry:
     """Storage ring geometry parameters"""
@@ -126,8 +130,10 @@ class RingGeometry:
 
 @dataclass
 class MagneticField:
-    """Magnetic field configuration"""
+    """Magnetic field configuration
+        Currently only use the nominal field value
+    """
     ring: RingGeometry
-    nominal_field: float = 1.45  # Tesla (confirmed in multiple sources)
-    field_uncertainty: float = 0.000034  # Tesla (34 ppb from final paper)
-    field_homogeneity: float = 70e-9  # 70 ppb target precision
+    nominal_field: float = 1.45  # T
+    field_uncertainty: float = 0.000034  # T (34 ppb)
+    field_homogeneity: float = 70e-9  # 70 ppb

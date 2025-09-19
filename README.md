@@ -16,6 +16,7 @@ The setup script should create a virtual Python environment with all the depende
 
 Run the simulation:
 ```bash
+cd run
 python run.py
 ```
 

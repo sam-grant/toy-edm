@@ -14,7 +14,7 @@ fi
 
 # Create virtual environment
 echo "Creating virtual environment..."
-python3 -m venv edm_env
+python3 -m venv toy-edm-env
 
 # Activate virtual environment
 echo "Activating virtual environment..."
@@ -27,23 +27,6 @@ pip install --upgrade pip
 # Install dependencies
 echo "Installing dependencies..."
 pip install -e .
-
-# Install additional packages for enhanced simulations
-echo "Installing additional packages..."
-pip install PyPDF2
-
-# Create necessary directories
-echo "Creating directories..."
-mkdir -p img
-mkdir -p archive
-
-# Run basic test
-echo "Running test..."
-python -c "
-from muon_parameters import MuonParameters
-from plotting import EDMPlotter
-print("Basic imports successful!")
-"
 
 echo ""
 echo "=========================================="
