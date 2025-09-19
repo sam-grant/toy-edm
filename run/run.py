@@ -33,7 +33,7 @@ plotter = Plotter()
 
 # Run the simulation
 config = {
-    'n_muons': 2,           # Number of muons to simulate (deterministic at present, one is as good as a million!)
+    'n_muons': 1,           # Number of muons to simulate (deterministic at present, one is as good as a million!)
     't_max': 50e-6,         # Total simulation time in seconds
     'time_steps': 1000,     # Number of time steps in the simulation
     'edm_mag': 1e-20,       # EDM magnitude in ecm 
